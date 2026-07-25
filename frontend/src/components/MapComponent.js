@@ -44,14 +44,20 @@ function ChangeView({ center, zoom }) {
   return null;
 }
 
-const MapComponent = ({ areas = [], onAreaSelect, selectedArea }) => {
+const MapComponent = ({ areas = [], onAreaSelect, selectedArea, userLocation = null }) => {
   const chennaiCenter = [13.0827, 80.2707];
   const validAreas = areas.filter(a => a.lat && a.lng);
+  const mapCenter = userLocation
+    ? [userLocation.lat, userLocation.lng]
+    : selectedArea?.lat && selectedArea?.lng
+      ? [selectedArea.lat, selectedArea.lng]
+      : chennaiCenter;
+  const mapZoom = userLocation ? 13 : selectedArea?.lat ? 15 : 12;
 
   return (
     <MapContainer
-      center={chennaiCenter}
-      zoom={12}
+      center={mapCenter}
+      zoom={mapZoom}
       style={{ height: '100%', width: '100%' }}
       scrollWheelZoom={true}
     >
@@ -60,8 +66,17 @@ const MapComponent = ({ areas = [], onAreaSelect, selectedArea }) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
-      {selectedArea?.lat && selectedArea?.lng && (
-        <ChangeView center={[selectedArea.lat, selectedArea.lng]} zoom={15} />
+      {(selectedArea?.lat && selectedArea?.lng) || userLocation ? (
+        <ChangeView center={mapCenter} zoom={mapZoom} />
+      ) : null}
+
+      {userLocation && (
+        <Marker
+          position={[userLocation.lat, userLocation.lng]}
+          icon={createPinIcon('#3b82f6', 32)}
+        >
+          <Popup>You are here</Popup>
+        </Marker>
       )}
 
       {validAreas.map(area => {

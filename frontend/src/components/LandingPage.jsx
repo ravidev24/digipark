@@ -12,6 +12,32 @@ import {
   Star,
 } from "lucide-react";
 import { ROUTES } from "../routes";
+import bannerImg from "../banner.webp";
+import solutionImg from "../our-solution-1.webp";
+import parkingImg from "../parking-management.png";
+import scanImg from "../scan.webp";
+
+const DestinationImage = ({ src, alt }) => {
+  const [failed, setFailed] = React.useState(false);
+
+  if (failed) {
+    return (
+      <div className="w-full h-full bg-gradient-to-br from-teal-800 to-slate-900 flex items-center justify-center">
+        <MapPin size={40} className="text-teal-400/60" />
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      loading="lazy"
+      onError={() => setFailed(true)}
+      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+    />
+  );
+};
 
 const LandingPage = () => {
   const features = [
@@ -22,10 +48,10 @@ const LandingPage = () => {
   ];
 
   const destinations = [
-    { name: "Express Avenue Mall", type: "Mall", slots: "50+", img: "https://images.unsplash.com/photo-1590674033513-3efbe96d6fc3?auto=format&fit=crop&q=80&w=600" },
-    { name: "Phoenix Marketcity", type: "Mall", slots: "100+", img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=600" },
-    { name: "Sathyam Cinemas", type: "Theater", slots: "30+", img: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&q=80&w=600" },
-    { name: "Marina Beach", type: "General", slots: "80+", img: "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?auto=format&fit=crop&q=80&w=600" },
+    { name: "Express Avenue Mall", type: "Mall", slots: "50+", img: bannerImg },
+    { name: "Phoenix Marketcity", type: "Mall", slots: "100+", img: solutionImg },
+    { name: "Sathyam Cinemas", type: "Theater", slots: "30+", img: scanImg },
+    { name: "Marina Beach", type: "General", slots: "80+", img: parkingImg },
   ];
 
   const stats = [
@@ -132,7 +158,7 @@ const LandingPage = () => {
             {destinations.map((d, i) => (
               <div key={i} className="landing-dest-card group">
                 <div className="relative h-48 overflow-hidden rounded-t-2xl">
-                  <img src={d.img} alt={d.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <DestinationImage src={d.img} alt={d.name} />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent" />
                   <span className="absolute top-4 left-4 px-3 py-1 bg-teal-600 text-white text-xs font-semibold rounded-full uppercase">{d.type}</span>
                 </div>

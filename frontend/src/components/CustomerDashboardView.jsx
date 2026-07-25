@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import {
   Calendar, IndianRupee, MapPin, ArrowRight, Car,
-  TrendingUp, Zap, ChevronRight,
+  TrendingUp, Zap, ChevronRight, Navigation,
 } from "lucide-react";
 import { API_URL, authHeaders } from "../config/api";
 import { ROUTES } from "../routes";
@@ -131,38 +131,54 @@ const CustomerDashboardView = ({ user, token }) => {
 
       {/* Quick Actions */}
       <div
-        className="grid grid-cols-1 md:grid-cols-2 gap-5 animate-slide-up"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 animate-slide-up"
         style={{ animationDelay: "0.5s" }}
       >
         <Link
           to={ROUTES.CUSTOMER_PARKING}
-          className="group flex items-center gap-5 p-6 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg
+          className="group flex items-center gap-4 sm:gap-5 p-5 sm:p-6 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg
             bg-gradient-to-r from-teal-500 to-teal-600 text-white"
         >
-          <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
-            <MapPin size={28} />
+          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shrink-0">
+            <MapPin size={24} className="sm:w-7 sm:h-7" />
           </div>
-          <div className="flex-1">
-            <h3 className="text-lg font-bold mb-0.5">Find Parking</h3>
-            <p className="text-teal-100 text-sm">Browse and book available spots near you</p>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-base sm:text-lg font-bold mb-0.5">Find Parking</h3>
+            <p className="text-teal-100 text-xs sm:text-sm truncate">Browse all parking locations</p>
           </div>
-          <ChevronRight size={24} className="group-hover:translate-x-1 transition-transform" />
+          <ChevronRight size={22} className="group-hover:translate-x-1 transition-transform shrink-0" />
+        </Link>
+
+        <Link
+          to={ROUTES.CUSTOMER_PARKING}
+          state={{ openNearby: true }}
+          className="group flex items-center gap-4 sm:gap-5 p-5 sm:p-6 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg
+            bg-gradient-to-r from-blue-500 to-blue-600 text-white"
+        >
+          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shrink-0">
+            <Navigation size={24} className="sm:w-7 sm:h-7" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-base sm:text-lg font-bold mb-0.5">Nearby Parking</h3>
+            <p className="text-blue-100 text-xs sm:text-sm truncate">Find spots closest to you</p>
+          </div>
+          <ChevronRight size={22} className="group-hover:translate-x-1 transition-transform shrink-0" />
         </Link>
 
         <Link
           to={ROUTES.CUSTOMER_BOOKINGS}
-          className="group flex items-center gap-5 p-6 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg
+          className="group flex items-center gap-4 sm:gap-5 p-5 sm:p-6 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg sm:col-span-2 lg:col-span-1
             bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-white/5
             hover:border-teal-300 dark:hover:border-teal-500/30"
         >
-          <div className="w-14 h-14 bg-teal-100 dark:bg-teal-500/10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
-            <Calendar size={28} className="text-teal-600 dark:text-teal-400" />
+          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-teal-100 dark:bg-teal-500/10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shrink-0">
+            <Calendar size={24} className="text-teal-600 dark:text-teal-400 sm:w-7 sm:h-7" />
           </div>
-          <div className="flex-1">
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-0.5">My Bookings</h3>
-            <p className="text-slate-500 dark:text-slate-400 text-sm">View and manage your parking sessions</p>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-0.5">My Bookings</h3>
+            <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm truncate">View your parking sessions</p>
           </div>
-          <ChevronRight size={24} className="text-slate-400 dark:text-slate-600 group-hover:text-teal-500 group-hover:translate-x-1 transition-all" />
+          <ChevronRight size={22} className="text-slate-400 dark:text-slate-600 group-hover:text-teal-500 group-hover:translate-x-1 transition-all shrink-0" />
         </Link>
       </div>
 
@@ -199,23 +215,23 @@ const CustomerDashboardView = ({ user, token }) => {
               {stats.recentBookings.map((b, i) => (
                 <div
                   key={b._id}
-                  className="flex items-center justify-between p-4 rounded-xl transition-all duration-200 animate-slide-up
+                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl transition-all duration-200 animate-slide-up
                     bg-slate-50 dark:bg-slate-800/30 border border-slate-100 dark:border-white/5
                     hover:bg-slate-100 dark:hover:bg-slate-800/50 hover:border-slate-200 dark:hover:border-white/10"
                   style={{ animationDelay: `${0.7 + i * 0.1}s` }}
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="w-11 h-11 bg-teal-100 dark:bg-teal-600/10 rounded-xl flex items-center justify-center">
+                  <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                    <div className="w-10 h-10 sm:w-11 sm:h-11 bg-teal-100 dark:bg-teal-600/10 rounded-xl flex items-center justify-center shrink-0">
                       <Car size={18} className="text-teal-600 dark:text-teal-400" />
                     </div>
-                    <div>
-                      <p className="font-semibold text-slate-900 dark:text-white">{b.slot?.area?.name}</p>
+                    <div className="min-w-0">
+                      <p className="font-semibold text-slate-900 dark:text-white truncate">{b.slot?.area?.name}</p>
                       <p className="text-sm text-slate-500 dark:text-slate-400">
                         Slot {b.slot?.slotNumber} · {new Date(b.startTime).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
                       </p>
                     </div>
                   </div>
-                  <div className="text-right">
+                  <div className="flex sm:block items-center justify-between sm:text-right pl-[52px] sm:pl-0 shrink-0">
                     <p className="font-bold text-teal-600 dark:text-teal-400">₹{b.totalPrice}</p>
                     <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${getStatusStyle(b.status)}`}>
                       {b.status}
