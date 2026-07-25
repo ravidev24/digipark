@@ -16,15 +16,17 @@ app.use(cors(clientUrls?.length ? { origin: clientUrls } : {}));
 app.use(express.json());
 
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/parkingDB";
+let mongoConnectionError = null;
 
 if (!process.env.MONGO_URI && process.env.NODE_ENV === "production") {
   console.error("FATAL: MONGO_URI is not set on this server. Add it in Render → Environment.");
 }
 
 mongoose
-  .connect(MONGO_URI, { serverSelectionTimeoutMS: 10000 })
+  .connect(MONGO_URI, { serverSelectionTimeoutMS: 15000 })
   .then(() => {
-    console.log("MongoDB Connected");
+    mongoConnectionError = null;
+    console.log("MongoDB Connected to database:", mongoose.connection.name);
 
     releaseExpiredBookings().then((count) => {
       if (count > 0) console.log(`Released ${count} expired booking(s) on startup`);
@@ -40,6 +42,7 @@ mongoose
     }, 5 * 60 * 1000);
   })
   .catch((err) => {
+    mongoConnectionError = err.message;
     console.error("MongoDB connection FAILED:", err.message);
   });
 
@@ -56,7 +59,9 @@ app.get("/health", (req, res) => {
   res.json({
     ok: mongoose.connection.readyState === 1,
     db: mongoose.connection.readyState === 1 ? "connected" : "disconnected",
+    database: mongoose.connection.name || null,
     mongoUriSet: Boolean(process.env.MONGO_URI),
+    error: mongoConnectionError,
   });
 });
 

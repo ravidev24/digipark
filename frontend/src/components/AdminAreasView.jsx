@@ -90,53 +90,38 @@ const AdminAreasView = ({ token, fetchAreas }) => {
     }
   };
 
-  // Reverse geocode lat/lng → name + address
+  // Reverse geocode lat/lng → name + address (via backend proxy)
   const reverseGeocode = async (lat, lng, isEdit = false) => {
     setGeocoding(true);
     setGeocodeStatus("Fetching location details…");
     try {
       const res = await axios.get(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`,
-        { headers: { "Accept-Language": "en" } }
+        `${API_URL}/reverse-geocode?lat=${lat}&lng=${lng}`,
+        authHeaders(token)
       );
-      if (res.data) {
-        const d = res.data;
-        const addr = d.address || {};
-        const nameParts = [
-          addr.amenity,
-          addr.building,
-          addr.shop,
-          addr.tourism,
-          addr.road,
-          addr.suburb,
-          addr.neighbourhood,
-        ].filter(Boolean);
-
-        const suggestedName = d.name || nameParts[0] || "Custom Parking Spot";
-        const fullAddress = [
-          addr.road,
-          addr.suburb || addr.neighbourhood,
-          addr.city || addr.town || addr.village || "Chennai",
-          addr.state,
-        ].filter(Boolean).join(", ");
-
-        if (isEdit) {
-          setEditing(prev => ({ ...prev, lat, lng, name: suggestedName, address: fullAddress || d.display_name }));
-        } else {
-          setForm(prev => ({ ...prev, lat, lng, name: suggestedName, address: fullAddress || d.display_name }));
-        }
-        setGeocodeStatus("✓ Location found! Edit the name/address if needed.");
+      const { name, address } = res.data;
+      if (isEdit) {
+        setEditing((prev) => ({ ...prev, lat, lng, name, address }));
+      } else {
+        setForm((prev) => ({ ...prev, lat, lng, name, address }));
       }
+      setGeocodeStatus("✓ Name & address auto-filled — edit if needed.");
     } catch (err) {
-      setGeocodeStatus("⚠ Could not fetch address — please type it manually.");
-      if (isEdit) setEditing(prev => ({ ...prev, lat, lng }));
-      else setForm(prev => ({ ...prev, lat, lng }));
+      setGeocodeStatus("⚠ Could not fetch address — please type manually.");
+      if (isEdit) setEditing((prev) => ({ ...prev, lat, lng }));
+      else setForm((prev) => ({ ...prev, lat, lng }));
     } finally {
       setGeocoding(false);
     }
   };
 
   const handleMapClick = (lat, lng) => {
+    // Update pin position immediately, then fetch name/address
+    if (editing) {
+      setEditing((prev) => ({ ...prev, lat, lng }));
+    } else {
+      setForm((prev) => ({ ...prev, lat, lng }));
+    }
     reverseGeocode(lat, lng, !!editing);
   };
 
@@ -218,7 +203,7 @@ const AdminAreasView = ({ token, fetchAreas }) => {
           <div>
             <label className="form-label flex items-center gap-2 mb-3">
               <Navigation size={14} className="text-blue-400" />
-              Click on the map to set location
+              Click on the map — name & address auto-fill
             </label>
             <div className="relative rounded-xl overflow-hidden border border-white/10" style={{ height: 340 }}>
               <MapContainer
@@ -273,7 +258,7 @@ const AdminAreasView = ({ token, fetchAreas }) => {
                 className="form-input"
                 value={data.name}
                 onChange={e => set("name", e.target.value)}
-                placeholder="e.g. Express Avenue Mall"
+                placeholder="Auto-fills when you click the map"
                 required
               />
             </div>
@@ -284,7 +269,7 @@ const AdminAreasView = ({ token, fetchAreas }) => {
                 rows={2}
                 value={data.address}
                 onChange={e => set("address", e.target.value)}
-                placeholder="Street, Area, City"
+                placeholder="Auto-fills when you click the map"
                 required
               />
             </div>

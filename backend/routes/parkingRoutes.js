@@ -28,6 +28,7 @@ router.delete("/slots/:id", auth, admin, parkingController.deleteSlot);
 router.put("/areas/:id", auth, admin, parkingController.updateArea);
 router.delete("/areas/:id", auth, admin, parkingController.deleteArea);
 router.post("/areas", auth, admin, parkingController.createAreaWithSlots);
+router.get("/reverse-geocode", auth, admin, parkingController.reverseGeocode);
 
 router.post("/seed", auth, admin, parkingController.seedData);
 

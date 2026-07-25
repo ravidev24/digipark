@@ -4,6 +4,7 @@ const Booking = require("../models/Booking");
 const Transaction = require("../models/Transaction");
 const User = require("../models/User");
 const releaseExpiredBookings = require("../utils/releaseExpiredBookings");
+const { parseNominatimResponse } = require("../utils/parseNominatim");
 
 const generateTransactionId = () =>
   `TXN${Date.now()}${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
@@ -452,6 +453,43 @@ exports.createAreaWithSlots = async (req, res) => {
     await Slot.insertMany(slots);
 
     res.status(201).json({ message: "Parking area and slots created successfully", area });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.reverseGeocode = async (req, res) => {
+  try {
+    const { lat, lng } = req.query;
+    if (!lat || !lng) {
+      return res.status(400).json({ message: "lat and lng are required" });
+    }
+
+    const url =
+      `https://nominatim.openstreetmap.org/reverse?format=json` +
+      `&lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lng)}&zoom=18&addressdetails=1`;
+
+    const response = await fetch(url, {
+      headers: {
+        "User-Agent": "DigiPark/1.0 (https://digipark-ten.vercel.app)",
+        "Accept-Language": "en",
+      },
+    });
+
+    if (!response.ok) {
+      return res.status(502).json({ message: "Geocoding service unavailable" });
+    }
+
+    const data = await response.json();
+    const { name, address } = parseNominatimResponse(data);
+
+    res.json({
+      lat: parseFloat(lat),
+      lng: parseFloat(lng),
+      name,
+      address,
+      displayName: data.display_name || address,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
