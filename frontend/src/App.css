@@ -1,0 +1,42 @@
+/* Leaflet Map Styles */
+.leaflet-container {
+    @apply rounded-2xl !bg-slate-900 border border-white/10;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.leaflet-popup-content-wrapper {
+    @apply !bg-white !text-slate-900 !rounded-xl !p-0 overflow-hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3) !important;
+}
+
+.leaflet-popup-tip {
+    @apply !bg-white;
+}
+
+.leaflet-popup-content {
+    @apply !m-0;
+}
+
+.leaflet-popup-close-button {
+    color: #94a3b8 !important;
+    font-size: 18px !important;
+    padding: 6px 8px !important;
+}
+
+.leaflet-popup-close-button:hover {
+    color: #1e293b !important;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-slate-900;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-slate-800 rounded-full hover:bg-slate-700;
+}
