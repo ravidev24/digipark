@@ -1,9 +1,12 @@
 {
-  "name": "backend",
+  "name": "digipark-backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "DigiPark parking management API",
+  "main": "server.js",
   "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "seed:admin": "node scripts/seedAdmin.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

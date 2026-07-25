@@ -6,7 +6,13 @@ require("dotenv").config();
 const releaseExpiredBookings = require("./utils/releaseExpiredBookings");
 
 const app = express();
-app.use(cors());
+const PORT = process.env.PORT || 5001;
+
+const clientUrls = process.env.CLIENT_URL
+  ? process.env.CLIENT_URL.split(",").map((o) => o.trim()).filter(Boolean)
+  : null;
+
+app.use(cors(clientUrls?.length ? { origin: clientUrls } : {}));
 app.use(express.json());
 
 mongoose
@@ -14,7 +20,6 @@ mongoose
   .then(() => {
     console.log("MongoDB Connected");
 
-    // Auto-release slots every 5 minutes when parking hours end
     releaseExpiredBookings().then((count) => {
       if (count > 0) console.log(`Released ${count} expired booking(s) on startup`);
     });
@@ -30,12 +35,11 @@ mongoose
   })
   .catch((err) => console.log(err));
 
-// Use routes
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/parking", require("./routes/parkingRoutes"));
 
 app.get("/", (req, res) => {
-  res.send("Parking system backend is READY on port 5001!");
+  res.send(`DigiPark API is running on port ${PORT}`);
 });
 
-app.listen(5001, () => console.log("Server running on port 5001"));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
