@@ -11,7 +11,7 @@ const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/parkingDB"
 const seedAdmin = async () => {
   await mongoose.connect(MONGO_URI);
 
-  const email = process.env.ADMIN_EMAIL || "admin@parksmart.com";
+  const email = process.env.ADMIN_EMAIL || "admin@DigiPark.com";
   const existing = await User.findOne({ email });
 
   if (existing) {

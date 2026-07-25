@@ -50,7 +50,7 @@ const LoginPage = ({ onLogin }) => {
             <div className="w-12 h-12 bg-teal-600 rounded-xl flex items-center justify-center">
               <Car size={28} className="text-white" />
             </div>
-            <span className="text-3xl font-bold text-white">ParkSmart</span>
+            <span className="text-3xl font-bold text-white">DigiPark</span>
           </div>
           <h1 className="text-4xl font-bold text-white mb-4 leading-tight">
             India's Most Trusted Parking Partner
@@ -67,7 +67,7 @@ const LoginPage = ({ onLogin }) => {
             <div className="w-10 h-10 bg-teal-600 rounded-xl flex items-center justify-center">
               <Car size={22} className="text-white" />
             </div>
-            <span className="text-2xl font-bold text-white">ParkSmart</span>
+            <span className="text-2xl font-bold text-white">DigiPark</span>
           </div>
 
           <div className="auth-card p-8">

@@ -32,7 +32,7 @@ const DashboardShell = ({ children, user, theme, setTheme, handleLogout, seedDat
           <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-2xl shadow-indigo-500/20">
             <Car size={24} className="text-white" />
           </div>
-          <h1 className="text-2xl font-black tracking-tighter text-white uppercase italic">ParkSmart</h1>
+          <h1 className="text-2xl font-black tracking-tighter text-white uppercase italic">DigiPark</h1>
         </div>
 
         <nav className="flex-1 px-6 space-y-2">

@@ -86,7 +86,7 @@ const CustomerShell = ({ children, user, handleLogout, theme, toggleTheme }) => 
               <Car size={22} className="text-white" />
             </div>
             <span className={`text-xl font-bold tracking-tight ${isDark ? "text-white" : "text-slate-900"}`}>
-              ParkSmart
+              DigiPark
             </span>
           </Link>
 

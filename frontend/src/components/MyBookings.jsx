@@ -28,7 +28,7 @@ const MyBookings = ({ token }) => {
     const doc = new jsPDF();
     doc.setFontSize(22);
     doc.setTextColor(13, 148, 136);
-    doc.text("ParkSmart Invoice", 105, 20, { align: "center" });
+    doc.text("DigiPark Invoice", 105, 20, { align: "center" });
     doc.setFontSize(10);
     doc.setTextColor(100);
     doc.text(`Invoice ID: ${booking._id.substring(0, 8).toUpperCase()}`, 105, 30, { align: "center" });
@@ -61,7 +61,7 @@ const MyBookings = ({ token }) => {
     doc.setFontSize(10);
     doc.setFont(undefined, "normal");
     doc.setTextColor(150);
-    doc.text("Thank you for choosing ParkSmart.", 105, 280, { align: "center" });
+    doc.text("Thank you for choosing DigiPark.", 105, 280, { align: "center" });
     doc.save(`Invoice_${booking._id.substring(0, 8)}.pdf`);
   };
 

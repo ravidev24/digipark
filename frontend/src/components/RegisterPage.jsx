@@ -19,7 +19,7 @@ const RegisterPage = ({ onLogin }) => {
       const res = await axios.post(`${AUTH_URL}/register`, form);
       onLogin(res.data.token, res.data.user);
       Swal.fire({
-        title: "Welcome to ParkSmart!",
+        title: "Welcome to DigiPark!",
         text: "Your customer account has been created.",
         icon: "success",
         timer: 2000,
@@ -50,7 +50,7 @@ const RegisterPage = ({ onLogin }) => {
             <div className="w-12 h-12 bg-teal-600 rounded-xl flex items-center justify-center">
               <Car size={28} className="text-white" />
             </div>
-            <span className="text-3xl font-bold text-white">ParkSmart</span>
+            <span className="text-3xl font-bold text-white">DigiPark</span>
           </div>
           <h1 className="text-4xl font-bold text-white mb-4 leading-tight">
             Join India's Smart Parking Network

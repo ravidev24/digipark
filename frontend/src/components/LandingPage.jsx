@@ -43,7 +43,7 @@ const LandingPage = () => {
             <div className="w-10 h-10 bg-teal-600 rounded-xl flex items-center justify-center">
               <Car size={22} className="text-white" />
             </div>
-            <span className="text-xl font-bold text-white">ParkSmart</span>
+            <span className="text-xl font-bold text-white">DigiPark</span>
           </Link>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
             <a href="#features" className="hover:text-white transition-colors">Features</a>
@@ -158,7 +158,7 @@ const LandingPage = () => {
           </div>
           <h2 className="text-3xl font-bold text-white mb-6">Superior User Experience</h2>
           <p className="text-slate-300 text-lg leading-relaxed mb-10">
-            ParkSmart delivers a seamless parking experience with real-time availability, secure payments, and instant booking confirmations — making every trip stress-free.
+            DigiPark delivers a seamless parking experience with real-time availability, secure payments, and instant booking confirmations — making every trip stress-free.
           </p>
           <Link to={ROUTES.REGISTER} className="btn-customer inline-flex items-center gap-2 px-10 py-4">
             Create Free Account <ChevronRight size={20} />
@@ -172,9 +172,9 @@ const LandingPage = () => {
             <div className="w-10 h-10 bg-teal-600 rounded-xl flex items-center justify-center">
               <Car size={22} className="text-white" />
             </div>
-            <span className="text-lg font-bold text-white">ParkSmart</span>
+            <span className="text-lg font-bold text-white">DigiPark</span>
           </div>
-          <p className="text-slate-500 text-sm">© 2026 ParkSmart. Smart parking for Chennai.</p>
+          <p className="text-slate-500 text-sm">© 2026 DigiPark. Smart parking for Chennai.</p>
           <div className="flex gap-6 text-sm text-slate-500">
             <button type="button" className="hover:text-teal-400 transition-colors">Privacy</button>
             <button type="button" className="hover:text-teal-400 transition-colors">Terms</button>

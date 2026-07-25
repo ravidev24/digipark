@@ -43,7 +43,7 @@ const AdminShell = ({ children, user, handleLogout, theme, toggleTheme }) => {
               <Car size={22} className="text-white" />
             </div>
             <div>
-              <h1 className="text-lg font-bold admin-text">ParkSmart</h1>
+              <h1 className="text-lg font-bold admin-text">DigiPark</h1>
               <p className="text-[10px] text-blue-600 dark:text-blue-400 uppercase tracking-widest font-semibold">Admin Panel</p>
             </div>
           </div>
