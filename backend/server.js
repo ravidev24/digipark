@@ -15,8 +15,14 @@ const clientUrls = process.env.CLIENT_URL
 app.use(cors(clientUrls?.length ? { origin: clientUrls } : {}));
 app.use(express.json());
 
+const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/parkingDB";
+
+if (!process.env.MONGO_URI && process.env.NODE_ENV === "production") {
+  console.error("FATAL: MONGO_URI is not set on this server. Add it in Render → Environment.");
+}
+
 mongoose
-  .connect(process.env.MONGO_URI || "mongodb://localhost:27017/parkingDB")
+  .connect(MONGO_URI, { serverSelectionTimeoutMS: 10000 })
   .then(() => {
     console.log("MongoDB Connected");
 
@@ -33,13 +39,25 @@ mongoose
       }
     }, 5 * 60 * 1000);
   })
-  .catch((err) => console.log(err));
+  .catch((err) => {
+    console.error("MongoDB connection FAILED:", err.message);
+  });
 
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/parking", require("./routes/parkingRoutes"));
 
 app.get("/", (req, res) => {
-  res.send(`DigiPark API is running on port ${PORT}`);
+  const dbState = mongoose.connection.readyState;
+  const dbStatus = dbState === 1 ? "connected" : "disconnected";
+  res.send(`DigiPark API is running on port ${PORT} | MongoDB: ${dbStatus}`);
+});
+
+app.get("/health", (req, res) => {
+  res.json({
+    ok: mongoose.connection.readyState === 1,
+    db: mongoose.connection.readyState === 1 ? "connected" : "disconnected",
+    mongoUriSet: Boolean(process.env.MONGO_URI),
+  });
 });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
