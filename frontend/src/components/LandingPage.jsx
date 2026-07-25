@@ -176,9 +176,9 @@ const LandingPage = () => {
           </div>
           <p className="text-slate-500 text-sm">© 2026 ParkSmart. Smart parking for Chennai.</p>
           <div className="flex gap-6 text-sm text-slate-500">
-            <a href="#" className="hover:text-teal-400 transition-colors">Privacy</a>
-            <a href="#" className="hover:text-teal-400 transition-colors">Terms</a>
-            <a href="#" className="hover:text-teal-400 transition-colors">Support</a>
+            <button type="button" className="hover:text-teal-400 transition-colors">Privacy</button>
+            <button type="button" className="hover:text-teal-400 transition-colors">Terms</button>
+            <button type="button" className="hover:text-teal-400 transition-colors">Support</button>
           </div>
         </div>
       </footer>

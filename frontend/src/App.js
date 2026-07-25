@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import "./App.css";
@@ -39,6 +39,23 @@ function App() {
     fetchAreas();
   }, []);
 
+  const handleLogout = useCallback(async (redirect = true) => {
+    try {
+      if (token) {
+        await axios.post(`${AUTH_URL}/logout`, {}, authHeaders(token));
+      }
+    } catch {
+      // proceed with local logout even if API fails
+    }
+    setToken("");
+    setUser(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    if (redirect) {
+      window.location.href = ROUTES.LANDING;
+    }
+  }, [token]);
+
   useEffect(() => {
     const interceptor = axios.interceptors.response.use(
       (response) => response,
@@ -58,7 +75,7 @@ function App() {
       }
     );
     return () => axios.interceptors.response.eject(interceptor);
-  }, [token]);
+  }, [token, handleLogout]);
 
   const fetchAreas = async () => {
     try {
@@ -128,23 +145,6 @@ function App() {
   const handleProfileUpdate = (updatedUser) => {
     setUser(updatedUser);
     localStorage.setItem("user", JSON.stringify(updatedUser));
-  };
-
-  const handleLogout = async (redirect = true) => {
-    try {
-      if (token) {
-        await axios.post(`${AUTH_URL}/logout`, {}, authHeaders(token));
-      }
-    } catch {
-      // proceed with local logout even if API fails
-    }
-    setToken("");
-    setUser(null);
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    if (redirect) {
-      window.location.href = ROUTES.LANDING;
-    }
   };
 
   return (

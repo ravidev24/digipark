@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { Calendar, Clock, MapPin, Tag, CheckCircle2, FileText } from "lucide-react";
+import { Calendar, Clock, MapPin, Tag, FileText } from "lucide-react";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { API_URL, authHeaders } from "../config/api";
@@ -9,11 +9,7 @@ const MyBookings = ({ token }) => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchBookings();
-  }, [token]);
-
-  const fetchBookings = async () => {
+  const fetchBookings = useCallback(async () => {
     try {
       const res = await axios.get(`${API_URL}/bookings`, authHeaders(token));
       setBookings(res.data);
@@ -22,7 +18,11 @@ const MyBookings = ({ token }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
+
+  useEffect(() => {
+    fetchBookings();
+  }, [fetchBookings]);
 
   const generateInvoice = (booking) => {
     const doc = new jsPDF();

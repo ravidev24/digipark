@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Plus, Edit, Trash2, ParkingSquare } from "lucide-react";
@@ -11,11 +11,7 @@ const AdminSlotsView = ({ token }) => {
   const [form, setForm] = useState({ areaId: "", slotNumber: "", slotType: "car", pricePerHour: 20 });
   const [editing, setEditing] = useState(null);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const [slotsRes, areasRes] = await Promise.all([
         axios.get(`${API_URL}/slots`, authHeaders(token)),
@@ -28,7 +24,11 @@ const AdminSlotsView = ({ token }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const handleCreate = async (e) => {
     e.preventDefault();

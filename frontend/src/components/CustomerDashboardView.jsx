@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import {
-  Calendar, Clock, IndianRupee, MapPin, ArrowRight, Car,
+  Calendar, IndianRupee, MapPin, ArrowRight, Car,
   TrendingUp, Zap, ChevronRight,
 } from "lucide-react";
 import { API_URL, authHeaders } from "../config/api";

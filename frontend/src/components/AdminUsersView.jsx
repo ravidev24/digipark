@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Phone, Mail, Shield, Plus, Edit, Trash2 } from "lucide-react";
@@ -10,11 +10,7 @@ const AdminUsersView = ({ token }) => {
   const [newUser, setNewUser] = useState({ username: "", email: "", password: "", phoneNumber: "" });
   const [editingUser, setEditingUser] = useState(null);
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       const res = await axios.get(`${AUTH_URL}/users`, authHeaders(token));
       setUsers(res.data);
@@ -23,7 +19,11 @@ const AdminUsersView = ({ token }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
 
   const handleAddUser = async (e) => {
     e.preventDefault();

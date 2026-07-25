@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {
-  MapPin, Car, ShieldCheck, Clock, Search,
+  MapPin, Car, Search,
   ChevronLeft, CheckCircle2, Filter, ArrowRight,
 } from "lucide-react";
 import MapComponent from "./MapComponent";

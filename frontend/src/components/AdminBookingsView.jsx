@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -78,9 +78,20 @@ const AdminBookingsView = ({ token }) => {
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
 
+  const fetchBookings = useCallback(async () => {
+    try {
+      const res = await axios.get(`${API_URL}/all-bookings`, authHeaders(token));
+      setBookings(res.data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [token]);
+
   useEffect(() => {
     fetchBookings();
-  }, [token]);
+  }, [fetchBookings]);
 
   useEffect(() => {
     if (selected) {
@@ -90,17 +101,6 @@ const AdminBookingsView = ({ token }) => {
     }
     return () => { document.body.style.overflow = ""; };
   }, [selected]);
-
-  const fetchBookings = async () => {
-    try {
-      const res = await axios.get(`${API_URL}/all-bookings`, authHeaders(token));
-      setBookings(res.data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const updateStatus = async (id, status) => {
     try {
